@@ -3,8 +3,8 @@ Repo for bootstrapping Lynker's Cloud Sandbox Parity Account
 
 This project 
 - sets up an S3 bucket with a specific bucket policy using Terraform
-- creates DynamoDB for state locking
-- builds a VPC that tries to conform to the target environment while being independent
+- creates DynamoDB for state locking.  This is always named `"{var.environment}-terraform-state-lock`
+- builds a VPC that tries to conform to the target environment while being independent enough to allow work to be done freely.
 
 
 ## Requirements
@@ -16,8 +16,8 @@ This project
 
 1. **Clone the repository:**
    ```
-   git clone <repository-url> Lynker-CSB-Bootstrap
-   cd Lynker-CSB-Bootstrap
+   git clone <repository-url> lcsb-bootstrap
+   cd lcsb-bootstrap
    ```
 
 2. **Initialize Terraform:**
@@ -27,6 +27,18 @@ This project
 
 3. **Configure variables:**
    Update the `variables.tf` file with your desired bucket name, AWS account ID, and role ARNs or create a `lcsb.tfvars`
+
+   Configurable items are:
+
+   - `owner` for who gets to destroy this, if desired
+   - `region` for the AWS region to use
+   - `environment` for the name of this target environment
+   - `bucket_name` which must often be overridden unless you `use_env_in_bucket_name`
+   - `use_env_in_bucket_name` if you want the environment name to be prepended to the state bucket name
+   - `role_name_regex` is the regex to use to search for the role that should be allowed to write to the state bucket.  The system uses the first returned result, so this should return exactly one.
+   - `subnet_map` is a map(map(string)).  The top level is the AZ name to build a subnet.  For each subnet, if there is a `public` key in the submap, then it should point to the CIDR of a public network.  Same for a `private` key and private network.
+
+   These all have reasonable defaults.  For elements that are not "production" LCSB, the environment should be changed to something else and the bucket name adjusted, if desired.
 
 4. **Plan the deployment:**
    ```
@@ -43,7 +55,11 @@ This project
 
 ## Cleanup
 
-To remove all resources created by this project, run:
+To remove all resources created by this project:
+
+First, you must change all instances of `prevent_destroy = true` to `prevent_destroy = false` in the `lifecycle` configurations.
+
+Then you can 
 ```
 terraform destroy
 ``` 

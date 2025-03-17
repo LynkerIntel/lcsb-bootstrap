@@ -1,3 +1,14 @@
+variable "profile" {
+  description = "The AWS profile to use that maps to var.role_name_regex"
+  type        = string
+  default     = "lcsb-admin"
+}
+variable "owner" {
+  description = "The owner of the infrastructure"
+  type        = string
+  default     = "Lynker"
+}
+
 variable "region" {
   description = "The AWS region to create resources in"
   type        = string
@@ -12,14 +23,20 @@ variable "environment" {
 variable "bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
-  default     = "lcsb-terraform-state"
+  default     = "terraform-state"
 }
 
-variable "account_id" {
-  description = "The AWS account ID"
-  type        = string
-  default     = "571600850629"
+variable "use_env_in_bucket_name" {
+  description = "Whether to include the environment in the bucket name"
+  type        = bool
+  default     = true
 }
+
+# variable "account_id" {
+#   description = "The AWS account ID"
+#   type        = string
+#   default     = "571600850629"
+# }
 
 variable "role_name_regex" {
   description = "The name of the IAM role regex (for matching in different accounts)"
@@ -27,21 +44,21 @@ variable "role_name_regex" {
   default     = "AWSReservedSSO_AWSAdministratorAccess.*"
 }
 
-variable "availability_zones" {
-  description = "The availability zones to create resources in"
-  type        = list(string)
-  default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
-}
-variable "private_subnet_cidrs" {
-  description = "The CIDR blocks for the private subnets"
-  type        = list(string)
-  default     = ["172.31.48.0/20", "172.31.64.0/20", "172.31.80.0/20"]
-}
-variable "public_subnet_cidrs" {
-  description = "The CIDR blocks for the public subnets"
-  type        = list(string)
-  default     = ["172.31.0.0/20", "172.31.16.0/20", "172.31.32.0/20"]
-}
+# variable "availability_zones" {
+#   description = "The availability zones to create resources in"
+#   type        = list(string)
+#   default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
+# }
+# variable "private_subnet_cidrs" {
+#   description = "The CIDR blocks for the private subnets"
+#   type        = list(string)
+#   default     = ["172.31.48.0/20", "172.31.64.0/20", "172.31.80.0/20"]
+# }
+# variable "public_subnet_cidrs" {
+#   description = "The CIDR blocks for the public subnets"
+#   type        = list(string)
+#   default     = ["172.31.0.0/20", "172.31.16.0/20", "172.31.32.0/20"]
+# }
 
 variable "subnet_map" {
   default = {

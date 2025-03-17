@@ -10,12 +10,11 @@ terraform {
 
 provider "aws" {
   region  = var.region
-  profile = "lcsb-admin"
+  profile = var.profile
   default_tags {
     tags = {
-      Environment = "LCSB"
-      Owner       = "Lynker"
+      Environment = var.environment
+      Owner       = var.owner
     }
   }
-
 }

@@ -1,4 +1,6 @@
-
+locals {
+  actual_bucket = var.use_env_in_bucket_name ? "${var.environment}-${var.bucket_name}" : var.bucket_name
+}
 data "aws_iam_roles" "specific_role_search" {
   name_regex = var.role_name_regex
 }
@@ -8,7 +10,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "state_bucket" {
-  bucket = var.bucket_name
+  bucket = local.actual_bucket
 
   lifecycle {
     # prevent_destroy = true
@@ -48,7 +50,7 @@ resource "aws_s3_bucket_policy" "state_bucket_policy" {
 }
 
 resource "aws_dynamodb_table" "tfstate_lock_db" {
-  name         = "tfstate_lock_db"
+  name         = "${var.environment}-terraform-state-lock"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
