@@ -1,0 +1,60 @@
+
+data "aws_iam_roles" "specific_role_search" {
+  name_regex = var.role_name_regex
+}
+
+locals {
+  role_arn = tolist(data.aws_iam_roles.specific_role_search.arns)[0]
+}
+
+resource "aws_s3_bucket" "state_bucket" {
+  bucket = var.bucket_name
+
+  lifecycle {
+    # prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_policy" "state_bucket_policy" {
+  bucket = aws_s3_bucket.state_bucket.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowSpecificRole"
+        Effect = "Allow"
+        Principal = {
+          AWS = local.role_arn
+        }
+        Action   = "s3:*"
+        Resource = "${aws_s3_bucket.state_bucket.arn}/*"
+      },
+      {
+        Sid    = "DenyAllOthers"
+        Effect = "Deny"
+        Principal = {
+          AWS = "*"
+        }
+        Action   = "s3:*"
+        Resource = "${aws_s3_bucket.state_bucket.arn}/*"
+        Condition = {
+          StringNotEquals = {
+            "aws:PrincipalArn" = local.role_arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_dynamodb_table" "tfstate_lock_db" {
+  name         = "tfstate_lock_db"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+}
+

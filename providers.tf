@@ -1,0 +1,21 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.9"
+    }
+  }
+
+}
+
+provider "aws" {
+  region  = var.region
+  profile = "lcsb-admin"
+  default_tags {
+    tags = {
+      Environment = "LCSB"
+      Owner       = "Lynker"
+    }
+  }
+
+}
