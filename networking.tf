@@ -30,6 +30,7 @@ resource "aws_subnet" "public_subnets" {
   cidr_block        = each.value.public
   tags = {
     Name = "${var.environment}-public-${each.key}"
+    Tier = "Public"
   }
 
 
@@ -44,6 +45,7 @@ resource "aws_subnet" "private_subnets" {
   cidr_block                          = each.value.private
   tags = {
     Name = "${var.environment}-private-subnet-${each.key}"
+    Tier = "Private"
   }
 
 

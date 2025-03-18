@@ -10,12 +10,18 @@ output "env_vpc_id" {
   value = aws_vpc.env_vpc.id
 }
 
-output "public_subnet_ids" {
-  value = [for s in aws_subnet.public_subnets : s.id]
+output "public_subnets" {
+  value = { for s in aws_subnet.public_subnets : s.availability_zone => {
+    id         = s.id
+    cidr_block = s.cidr_block
+  } }
 }
 
 output "private_subnet_ids" {
-  value = [for s in aws_subnet.private_subnets : s.id]
+  value = { for s in aws_subnet.private_subnets : s.availability_zone => {
+    id         = s.id
+    cidr_block = s.cidr_block
+  } }
 }
 
 output "aws_security_group_sg" {
