@@ -201,6 +201,11 @@ resource "aws_iam_role_policy_attachment" "transfer_policy_attach" {
   policy_arn = aws_iam_policy.transfer_readwrite_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "working_policy_attach" {
+  role       = aws_iam_role.iot_role.name
+  policy_arn = aws_iam_policy.lcsb_working_readwrite_policy.arn
+}
+
 # Instance profiles
 resource "aws_iam_instance_profile" "inputs_profile" {
   name = "${var.environment}-inputs-profile"

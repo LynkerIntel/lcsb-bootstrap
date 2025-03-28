@@ -63,5 +63,17 @@ output "transfer_profile" {
 
 output "head_node_instance_profile" {
   value = aws_iam_instance_profile.head_node_profile.name
+}
 
+output "working_bucket" {
+  value = aws_s3_bucket.lcsb_working.bucket
+}
+output "working_bucket_arn" {
+  value = aws_s3_bucket.lcsb_working.arn
+}
+output "working_bucket_url" {
+  value = aws_s3_bucket_website_configuration.lcsb_www.website_endpoint
+}
+output "env_script_url" {
+  value = "${aws_s3_bucket_website_configuration.lcsb_www.website_endpoint}/${aws_s3_object.lcsb_environment_script.key}"
 }

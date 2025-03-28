@@ -85,3 +85,16 @@ variable "managed_policies" {
     "arn:aws:iam::aws:policy/AmazonFSxFullAccess",
   "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
 }
+
+variable "index_html" {
+  description = "The content of the index.html file"
+  type        = string
+  default     = "<h1>Why are you here?</h1><p>There is nothing to see here.</p>"
+
+}
+variable "error_html" {
+  description = "The content of the error.html file"
+  type        = string
+  default     = "<h1>No, seriously.  Why are you here?</h1><p>There is LITERALLY nothing to see here.</p>"
+
+}
