@@ -60,6 +60,7 @@ variable "role_name_regex" {
 #   default     = ["172.31.0.0/20", "172.31.16.0/20", "172.31.32.0/20"]
 # }
 
+# TODO This probably needs some work
 variable "subnet_map" {
   default = {
     us-east-2a = {
@@ -74,4 +75,13 @@ variable "subnet_map" {
       public  = "172.31.32.0/20"
       private = "172.31.80.0/20"
   } }
+}
+
+
+variable "managed_policies" {
+  description = "The attached IAM policies granting machine permissions"
+  default = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/AmazonFSxFullAccess",
+  "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
 }
