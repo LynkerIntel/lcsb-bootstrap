@@ -58,6 +58,10 @@ resource "aws_vpc" "env_vpc" {
   instance_tenancy                     = "default"
   enable_network_address_usage_metrics = "false"
 
+  tags = {
+    Name        = "${var.environment}-vpc"
+    Environment = "${var.environment}"
+  }
   lifecycle {
     # prevent_destroy = true
     ignore_changes = [tags]
@@ -91,6 +95,11 @@ resource "aws_default_network_acl" "default_network_acl" {
 
   # TODO Fix this!
   subnet_ids = concat([for o in aws_subnet.private_subnets : o.id], [for o in aws_subnet.public_subnets : o.id])
+
+  tags = {
+    Name        = "${var.environment}-acl"
+    Environment = "${var.environment}"
+  }
 }
 
 
@@ -105,6 +114,11 @@ resource "aws_route_table" "route_table_public" {
   }
 
   vpc_id = aws_vpc.env_vpc.id
+
+  tags = {
+    Name        = "${var.environment}-public-route-table"
+    Environment = "${var.environment}"
+  }
 }
 resource "aws_route_table" "private_route_table" {
   route {
@@ -114,15 +128,29 @@ resource "aws_route_table" "private_route_table" {
 
   vpc_id = aws_vpc.env_vpc.id
 
+  tags = {
+    Name        = "${var.environment}-private-route-table"
+    Environment = "${var.environment}"
+  }
+
 }
 
 resource "aws_internet_gateway" "igw_default_env_vpc" {
   vpc_id = aws_vpc.env_vpc.id
+  tags = {
+    Name        = "${var.environment}-igw"
+    Environment = "${var.environment}"
+  }
 }
 
 resource "aws_eip" "nat_eip" {
   domain     = "vpc"
   depends_on = [aws_internet_gateway.igw_default_env_vpc]
+
+  tags = {
+    Name        = "${var.environment}-nat-eip"
+    Environment = "${var.environment}"
+  }
 }
 
 resource "aws_nat_gateway" "nat" {
