@@ -4,6 +4,9 @@ Repo for bootstrapping Lynker's Cloud Sandbox Parity Account
 This project 
 - sets up an S3 bucket with a specific bucket policy using Terraform
 - creates DynamoDB for state locking.  This is always named `"{var.environment}-terraform-state-lock`
+
+For the LCSB it also: 
+
 - builds a VPC that tries to conform to the target environment while being independent enough to allow work to be done freely.
 
 

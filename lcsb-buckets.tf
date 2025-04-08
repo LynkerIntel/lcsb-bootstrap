@@ -127,31 +127,31 @@ resource "aws_iam_role" "transfer_role" {
 
 # IAM Policies
 
-# TODO If the ssm_connect_policy doesn't work properly, maybe this one will
-# data "aws_iam_policy" "ssm_connect_policy" {
-#   arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMManagedInstanceCore"
-# }
-
-resource "aws_iam_policy" "ssm_connect_policy" {
-  name_prefix = "vm"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ssmmessages:CreateDataChannel",
-          "ssmmessages:OpenDataChannel",
-          "ssmmessages:CreateControlChannel",
-          "ssmmessages:OpenControlChannel",
-          "ssm:UpdateInstanceInformation",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+#TODO If the ssm_connect_policy doesn't work properly, maybe this one will
+data "aws_iam_policy" "ssm_connect_policy" {
+  name = "AmazonSSMManagedInstanceCore"
 }
+
+# resource "aws_iam_policy" "ssm_connect_policy" {
+#   name_prefix = "vm"
+
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Action = [
+#           "ssmmessages:CreateDataChannel",
+#           "ssmmessages:OpenDataChannel",
+#           "ssmmessages:CreateControlChannel",
+#           "ssmmessages:OpenControlChannel",
+#           "ssm:UpdateInstanceInformation",
+#         ]
+#         Effect   = "Allow"
+#         Resource = "*"
+#       },
+#     ]
+#   })
+# }
 resource "aws_iam_policy" "inputs_read_policy" {
   name        = "${var.environment}-inputs-read-policy"
   description = "Read-only access to inputs bucket"
@@ -256,7 +256,7 @@ resource "aws_iam_role_policy_attachment" "working_policy_attach" {
 
 resource "aws_iam_role_policy_attachment" "sss_policy_attach" {
   role       = aws_iam_role.iot_role.name
-  policy_arn = aws_iam_policy.ssm_connect_policy.arn
+  policy_arn = data.aws_iam_policy.ssm_connect_policy.arn
 }
 
 # Instance profiles
