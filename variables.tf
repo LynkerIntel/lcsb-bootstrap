@@ -80,10 +80,12 @@ variable "subnet_map" {
 
 variable "managed_policies" {
   description = "The attached IAM policies granting machine permissions"
-  default = ["arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+  default = [
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/AmazonS3FullAccess",
     "arn:aws:iam::aws:policy/AmazonFSxFullAccess",
-  "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
 }
 
 variable "index_html" {

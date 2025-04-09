@@ -1,3 +1,6 @@
+locals {
+  iot_role_name = "${var.environment}-iot-role"
+}
 # Define S3 buckets
 resource "aws_s3_bucket" "inputs_bucket" {
   bucket = "${var.environment}-inputs"
@@ -57,7 +60,7 @@ resource "aws_s3_bucket" "transfer_bucket" {
 # }
 
 resource "aws_iam_role" "iot_role" {
-  name = "${var.environment}-iot-role"
+  name = local.iot_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -222,10 +225,28 @@ resource "aws_iam_policy" "transfer_readwrite_policy" {
 
 # Attach policies to roles
 
-resource "aws_iam_role_policy_attachment" "iot_policy_attach_i" {
-  role       = aws_iam_role.iot_role.name
-  policy_arn = aws_iam_policy.inputs_read_policy.arn
+resource "aws_iam_policy" "ec2_pass_role" {
+  name        = "${var.environment}-pass-role-policy"
+  description = "Read and write access to transfer bucket"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        "Action" : [
+          "ec2:RunInstances",
+          "iam:PassRole"
+        ],
+        "Resource" : [
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.iot_role_name}"
+        ]
+      }
+    ]
+  })
+
 }
+
 resource "aws_iam_role_policy_attachment" "inputs_policy_attach" {
   role       = aws_iam_role.inputs_role.name
   policy_arn = aws_iam_policy.inputs_read_policy.arn
@@ -287,4 +308,8 @@ resource "aws_iam_role_policy_attachment" "head_node_role_policy_attach_profile"
   role       = aws_iam_role.iot_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "pass_role_attach" {
+  role       = aws_iam_role.iot_role.name
+  policy_arn = aws_iam_policy.ec2_pass_role.arn
+}
 
