@@ -1,5 +1,5 @@
 locals {
-  iot_role_name = "${var.environment}-iot-role"
+  io_role_name = "${var.environment}-io-role"
 }
 # Define S3 buckets
 resource "aws_s3_bucket" "inputs_bucket" {
@@ -38,7 +38,7 @@ resource "aws_s3_bucket" "transfer_bucket" {
 
 # IAM Roles and Instance Profiles for each bucket
 # resource "aws_iam_role" "ssm_role" {
-#   name = "${var.environment}-iot-role"
+#   name = "${var.environment}-io-role"
 
 #   assume_role_policy = jsonencode({
 #     Version = "2012-10-17"

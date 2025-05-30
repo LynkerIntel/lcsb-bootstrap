@@ -1,6 +1,6 @@
 
-resource "aws_iam_role" "iot_role" {
-  name = local.iot_role_name
+resource "aws_iam_role" "io_role" {
+  name = local.io_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -179,7 +179,7 @@ resource "aws_iam_policy" "ec2_pass_role" {
           "iam:PassRole"
         ],
         "Resource" : [
-          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.iot_role_name}"
+          "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.io_role_name}"
         ]
       }
     ]
@@ -191,16 +191,16 @@ resource "aws_iam_role_policy_attachment" "inputs_policy_attach" {
   policy_arn = aws_iam_policy.inputs_read_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "iot_policy_attach_o" {
-  role       = aws_iam_role.iot_role.name
+resource "aws_iam_role_policy_attachment" "io_policy_attach_o" {
+  role       = aws_iam_role.io_role.name
   policy_arn = aws_iam_policy.outputs_write_policy.arn
 }
 resource "aws_iam_role_policy_attachment" "outputs_policy_attach" {
   role       = aws_iam_role.outputs_role.name
   policy_arn = aws_iam_policy.outputs_write_policy.arn
 }
-resource "aws_iam_role_policy_attachment" "iot_policy_attach_t" {
-  role       = aws_iam_role.iot_role.name
+resource "aws_iam_role_policy_attachment" "io_policy_attach_t" {
+  role       = aws_iam_role.io_role.name
   policy_arn = aws_iam_policy.transfer_readwrite_policy.arn
 }
 
@@ -210,12 +210,12 @@ resource "aws_iam_role_policy_attachment" "transfer_policy_attach" {
 }
 
 resource "aws_iam_role_policy_attachment" "working_policy_attach" {
-  role       = aws_iam_role.iot_role.name
+  role       = aws_iam_role.io_role.name
   policy_arn = aws_iam_policy.csb_working_readwrite_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "sss_policy_attach" {
-  role       = aws_iam_role.iot_role.name
+  role       = aws_iam_role.io_role.name
   policy_arn = data.aws_iam_policy.ssm_connect_policy.arn
 }
 
@@ -237,18 +237,18 @@ resource "aws_iam_instance_profile" "transfer_profile" {
 
 resource "aws_iam_instance_profile" "head_node_profile" {
   name = "${var.environment}-head-node-profile"
-  role = aws_iam_role.iot_role.name
+  role = aws_iam_role.io_role.name
 }
 
 
 resource "aws_iam_role_policy_attachment" "head_node_role_policy_attach_profile" {
   count      = length(var.managed_policies)
   policy_arn = element(var.managed_policies, count.index)
-  role       = aws_iam_role.iot_role.name
+  role       = aws_iam_role.io_role.name
 }
 
 resource "aws_iam_role_policy_attachment" "pass_role_attach" {
-  role       = aws_iam_role.iot_role.name
+  role       = aws_iam_role.io_role.name
   policy_arn = aws_iam_policy.ec2_pass_role.arn
 }
 

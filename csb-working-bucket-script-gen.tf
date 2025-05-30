@@ -15,7 +15,7 @@ locals {
     export CSB_WORKING_BUCKET=${aws_s3_bucket.csb_working.bucket}
     export CSB_WORKING_BUCKET_ARN=${aws_s3_bucket.csb_working.arn}
     export CSB_WORKING_BUCKET_URL=${aws_s3_bucket_website_configuration.csb_www.website_endpoint}
-    expork PKR_VAR_vpc=${aws_vpc.csb_vpc.id}
+    export PKR_VAR_vpc=${aws_vpc.csb_vpc.id}
     export PKR_VAR_region=${AWS_REGION}
     export PKR_VAR_env=${var.environment}
     export PKR_VAR_bucket_name=${CSB_WORKING_BUCKET}
