@@ -1,0 +1,5 @@
+.*
+.envrc
+!.gitignore
+!.github/workflows
+terraform.tfstate*

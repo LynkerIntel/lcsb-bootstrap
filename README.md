@@ -5,7 +5,7 @@ This project
 - sets up an S3 bucket with a specific bucket policy using Terraform
 - creates DynamoDB for state locking.  This is always named `"{var.environment}-state-lock`
 
-For the LCSB it also: 
+For the CSB it also: 
 
 - builds a VPC that tries to conform to the target environment while being independent enough to allow work to be done freely.
 
@@ -41,7 +41,7 @@ For the LCSB it also:
    - `role_name_regex` is the regex to use to search for the role that should be allowed to write to the state bucket.  The system uses the first returned result, so this should return exactly one.
    - `subnet_map` is a map(map(string)).  The top level is the AZ name to build a subnet.  For each subnet, if there is a `public` key in the submap, then it should point to the CIDR of a public network.  Same for a `private` key and private network.
 
-   These all have reasonable defaults.  For elements that are not "production" LCSB, the environment should be changed to something else and the bucket name adjusted, if desired.
+   These all have reasonable defaults.  For elements that are not "production" CSB, the environment should be changed to something else and the bucket name adjusted, if desired.
 
 4. **Plan the deployment:**
    ```
