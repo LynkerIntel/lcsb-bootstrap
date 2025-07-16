@@ -1,4 +1,4 @@
-# cloud-sandbox-boostrap
+# cloud-sandbox-bootstrap
 Repo for bootstrapping the Cloud Sandbox
 
 This project 

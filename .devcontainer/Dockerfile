@@ -1,10 +1,4 @@
-FROM infrastructurebuilder/ansible-container:0.15
-ENV HOME="/root"
-ENV PATH="${HOME}/.local/bin:${PATH}"
-RUN <<SCRIPT1
-dnf -y update
-echo "alias ll='ls -l'" >> ${HOME}/.bashrc
-echo "alias python='python3'" >> ${HOME}/.bashrc
-dnf -y install git gcc-c++ python3-devel which
-dnf -y install gcc-gfortran
-SCRIPT1
+# Using a Dockerfile in case we want to modify the bootstrap running environment
+# That said, please refrain from modifying the bootstrap running environment.  
+# Put in a PR to the running container (below) instead.
+FROM infrastructurebuilder/minimal_alma_dc:latest

@@ -5,7 +5,7 @@ data "aws_vpc" "env_vpc" {
 
 data "aws_security_group" "sg_vpc_def_env" {
   vpc_id = data.aws_vpc.env_vpc.id
-  name = "default"
+  name   = "default"
 }
 
 # # Data source for default security group

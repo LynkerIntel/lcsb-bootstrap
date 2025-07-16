@@ -1,35 +1,30 @@
-variable "profile" {
-  description = "The AWS profile to use that maps to var.role_name_regex"
-  type        = string
-  default     = "csb-admin"
-}
-
-variable "target_az" {
-  description = "The target availability zone for the instance"
-  type        = string
-  default     = "us-east-2b"
-}
-variable "owner" {
-  description = "The owner of the infrastructure"
-  type        = string
-  default     = "Lynker"
-}
-
-variable "region" {
-  description = "The AWS region to create resources in"
-  type        = string
-  default     = "us-east-2"
-}
-
 variable "environment" {
   description = "Name of environment"
   type        = string
-  default     = "csb"
 }
 variable "bucket_name" {
   description = "The name of the S3 bucket"
   type        = string
   default     = "terraform-state"
+}
+
+variable "profile" {
+  description = "The AWS profile to use that maps to var.role_name_regex"
+  type        = string
+}
+
+variable "target_az" {
+  description = "The target availability zone for the instance"
+  type        = string
+}
+variable "owner" {
+  description = "The owner of the infrastructure"
+  type        = string
+}
+
+variable "region" {
+  description = "The AWS region to create resources in"
+  type        = string
 }
 
 variable "use_env_in_bucket_name" {
