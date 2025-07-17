@@ -77,3 +77,9 @@ output "working_bucket_url" {
 output "env_script_url" {
   value = "${aws_s3_bucket_website_configuration.csb_www.website_endpoint}/${aws_s3_object.csb_environment_script.key}"
 }
+output "env_properties_url" {
+  value = "${aws_s3_bucket_website_configuration.csb_www.website_endpoint}/${aws_s3_object.csb_properties_script.key}"
+}
+output "env_provider_template_url" {
+  value = "${aws_s3_bucket_website_configuration.csb_www.website_endpoint}/${aws_s3_object.providers_template.key}"
+}

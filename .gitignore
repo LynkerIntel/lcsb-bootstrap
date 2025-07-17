@@ -3,3 +3,10 @@
 !.gitignore
 !.github/workflows
 terraform.tfstate*
+_*.tf
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfvars.json
+*.tfplan
+*.tfplan.json
